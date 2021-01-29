@@ -41,6 +41,8 @@ public class CategoryService {
 		
 	
 	public Category findByNom(String nom) {
-		return this.repository.findByNom(nom);
+		return this.repository.findByNom(nom.replace("%20", " "));
 	}
+	
+	
 }

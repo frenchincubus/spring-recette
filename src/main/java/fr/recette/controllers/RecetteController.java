@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.recette.models.Category;
 import fr.recette.models.Recette;
+import fr.recette.services.CategoryService;
 import fr.recette.services.RecetteService;
 
 @RequestMapping("recettes")
@@ -23,6 +25,8 @@ public class RecetteController {
 	
 	@Autowired
 	private RecetteService service;
+	@Autowired
+	private CategoryService categorieService;
 
 	@GetMapping()
 	public List<Recette> getAll(){
@@ -31,20 +35,20 @@ public class RecetteController {
 	
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
-	public Recette addRecette(@RequestBody Recette recette) {
-		return this.service.addRecette(recette);
+	public Recette add(@RequestBody Recette recette) {
+		return this.service.add(recette);
 	}
 	
 	@PutMapping("/{id}")
-	public Recette updateRecette(@RequestBody Recette recette, @PathVariable String id) {
+	public Recette update(@RequestBody Recette recette, @PathVariable String id) {
 		Recette lRecette = this.findById(id);
 		recette.setId(lRecette.getId());
-		return this.service.updateRecette(recette);
+		return this.service.update(recette);
 	}
 	
 	@DeleteMapping("/{id}")
-	public void deleteRecette(@PathVariable String id) {
-		this.service.deleteRecette(id);
+	public void delete(@PathVariable String id) {
+		this.service.delete(id);
 	}
 	
 	@GetMapping("/recette/{id}")
@@ -55,5 +59,27 @@ public class RecetteController {
 	@GetMapping("/recette/nom/{nom}")
 	public List<Recette> findByNom(@PathVariable String nom) {
 		return this.service.findByNom(nom);
+	}
+	
+	/**
+	 * Recherche les recettes via le nom d'une catégorie
+	 * @param String nom de la catégorie
+	 * @return liste des recettes concordantes
+	 */
+	@GetMapping("/recette/categorie/{nom}")
+	public List<Recette> findByCategorieNom(@PathVariable String nom) {
+		Category categorie = this.categorieService.findByNom(nom.replace("%20", " "));
+		return this.service.findByCategories(categorie);
+	}
+	
+	/**
+	 * Recherche les recettes via l'id d'une catégorie
+	 * @param String id de la catégorie
+	 * @return liste des recettes concordantes
+	 */
+	@GetMapping("/categories/categorie/{id}")
+	public List<Recette> findByCategorieId(@PathVariable String id) {
+			Category categorie = this.categorieService.findById(id);
+			return this.service.findByCategories(categorie);
 	}
 }

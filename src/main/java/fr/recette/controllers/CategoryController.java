@@ -56,4 +56,5 @@ public class CategoryController {
 	public Category findByNom(@PathVariable String nom) {
 		return this.service.findByNom(nom);
 	}
+
 }
