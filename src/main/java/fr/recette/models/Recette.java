@@ -12,7 +12,7 @@ import lombok.Data;
 public class Recette {
 	
 	@Id
-	private int id;
+	private String id;
 	private String nom;
 	private List<Ingredient> ingredients;
 	private List<Category> categories;

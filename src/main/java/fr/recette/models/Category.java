@@ -10,7 +10,7 @@ import lombok.Data;
 public class Category {
 	
 	@Id
-	private int id;
+	private String id;
 	private String nom;
 
 	public Category() {}

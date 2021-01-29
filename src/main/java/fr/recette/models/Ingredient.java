@@ -10,7 +10,7 @@ import lombok.Data;
 public class Ingredient {
 	
 	@Id
-	private int id;
+	private String id;
 	private String nom;
 	private int quantite;
 	private String unite;
